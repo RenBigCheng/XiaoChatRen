@@ -90,7 +90,7 @@ const AI_PROVIDERS = {
 
   free: {
     name: '🎁 免费体验（由DeepSeek提供支持）',
-    endpoint: '/api/chat', // 将替换为实际的Vercel部署地址
+    endpoint: window.location.origin + '/api/chat', // 动态获取当前域名
     models: ['deepseek-chat'],
     headers: () => ({
       'Content-Type': 'application/json',

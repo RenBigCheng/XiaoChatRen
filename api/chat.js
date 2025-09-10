@@ -15,8 +15,9 @@ const CONFIG = {
   ALLOWED_ORIGINS: [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://your-domain.com', // 替换为您的实际域名
-  ],
+    'https://*.vercel.app', // 允许所有 Vercel 应用域名
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '', // 动态获取 Vercel URL
+  ].filter(Boolean),
 };
 
 // 内存存储（简化版，生产环境建议使用外部存储）
@@ -100,9 +101,17 @@ function validateOrigin(req) {
   // 开发环境允许所有localhost请求
   if (!origin) return true;
   
-  return CONFIG.ALLOWED_ORIGINS.some(allowedOrigin => 
-    origin.startsWith(allowedOrigin)
-  );
+  // 检查是否为 Vercel 域名
+  if (origin.includes('.vercel.app')) return true;
+  
+  return CONFIG.ALLOWED_ORIGINS.some(allowedOrigin => {
+    if (allowedOrigin.includes('*')) {
+      // 通配符匹配
+      const pattern = allowedOrigin.replace(/\*/g, '.*');
+      return new RegExp(pattern).test(origin);
+    }
+    return origin.startsWith(allowedOrigin);
+  });
 }
 
 /**
