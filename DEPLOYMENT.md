@@ -82,7 +82,7 @@ vercel --prod
 // 在 scripts/api.js 中找到免费服务配置
 free: {
   name: '🎁 免费体验（由DeepSeek提供支持）',
-  endpoint: 'https://your-vercel-app.vercel.app/api/chat', // 替换为您的实际域名
+  endpoint: window.location.origin + '/api/chat', // 自动获取当前域名
   // ... 其他配置
 }
 ```
