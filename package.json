@@ -1,0 +1,34 @@
+{
+  "name": "ai-chat-website",
+  "version": "1.0.0",
+  "description": "现代化的AI聊天网站，支持多角色对话、语音交互、文本处理等功能",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "dev:node": "npx http-server -p 8000 -c-1",
+    "build": "echo 'No build step required for static site'",
+    "deploy:vercel": "vercel --prod",
+    "env:vercel": "vercel env add"
+  },
+  "keywords": [
+    "ai",
+    "chat",
+    "deepseek",
+    "voice",
+    "javascript",
+    "html5",
+    "css3"
+  ],
+  "author": "AI助手团队",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  }
+}

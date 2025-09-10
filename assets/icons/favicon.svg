@@ -1,0 +1,23 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- AI助手Logo - 现代简约风格 -->
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007AFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#AF52DE;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 外层圆形背景 -->
+  <circle cx="16" cy="16" r="14" fill="url(#logoGradient)" opacity="0.1"/>
+  
+  <!-- 主要图标形状 - 类似对话气泡与大脑的结合 -->
+  <path d="M8 12C8 8.68629 10.6863 6 14 6H18C21.3137 6 24 8.68629 24 12V16C24 19.3137 21.3137 22 18 22H16L12 26V22H14C10.6863 22 8 19.3137 8 16V12Z" fill="url(#logoGradient)"/>
+  
+  <!-- 内部装饰点 - 代表AI智能 -->
+  <circle cx="13" cy="13" r="1.5" fill="white" opacity="0.9"/>
+  <circle cx="16" cy="13" r="1.5" fill="white" opacity="0.9"/>
+  <circle cx="19" cy="13" r="1.5" fill="white" opacity="0.9"/>
+  
+  <!-- 底部小装饰 - 代表连接和交流 -->
+  <path d="M14 17H18C18.5523 17 19 17.4477 19 18C19 18.5523 18.5523 19 18 19H14C13.4477 19 13 18.5523 13 18C13 17.4477 13.4477 17 14 17Z" fill="white" opacity="0.7"/>
+</svg>

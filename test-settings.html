@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置面板测试</title>
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+    <!-- 简化的测试页面 -->
+    <div id="app" class="app-container">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1 class="app-title">设置面板测试</h1>
+            </div>
+            <div class="header-right">
+                <button class="header-btn" id="settingsBtn" title="设置">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 12C11.1046 12 12 11.1046 12 10C12 8.89543 11.1046 8 10 8C8.89543 8 8 8.89543 8 10C8 11.1046 8.89543 12 10 12Z"/>
+                        <path d="M8.5 2H11.5L12 4.5C12.5 4.7 13 5 13.4 5.4L16 4.5L17.5 7L15.4 8.9C15.5 9.3 15.5 9.7 15.4 10.1L17.5 12L16 14.5L13.4 13.6C13 14 12.5 14.3 12 14.5L11.5 17H8.5L8 14.5C7.5 14.3 7 14 6.6 13.6L4 14.5L2.5 12L4.6 10.1C4.5 9.7 4.5 9.3 4.6 8.9L2.5 7L4 4.5L6.6 5.4C7 5 7.5 4.7 8 4.5L8.5 2Z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主内容 -->
+        <main style="padding: 20px; text-align: center;">
+            <h2>设置面板功能测试</h2>
+            <p>点击右上角的设置按钮测试设置面板是否正常打开</p>
+            
+            <div style="margin-top: 30px;">
+                <button onclick="testSettings()" style="background: #007AFF; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                    手动测试设置面板
+                </button>
+                <button onclick="checkElements()" style="background: #34C759; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-left: 10px;">
+                    检查页面元素
+                </button>
+            </div>
+            
+            <div id="testResults" style="margin-top: 20px; padding: 15px; background: #f5f5f7; border-radius: 8px; text-align: left;"></div>
+        </main>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3>设置</h3>
+                <button class="close-btn" id="closeSettingsBtn" title="关闭设置">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="settings-body">
+                <div class="settings-section">
+                    <h4>测试设置</h4>
+                    <div class="setting-item">
+                        <label for="testInput">测试输入</label>
+                        <input type="text" id="testInput" class="setting-input" placeholder="这是一个测试输入框">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知提示 -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <span class="notification-message"></span>
+            <button class="notification-close">×</button>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="scripts/utils.js"></script>
+    <script>
+        // 简化的测试脚本
+        function log(message, type = 'info') {
+            const results = document.getElementById('testResults');
+            const time = new Date().toLocaleTimeString();
+            const color = type === 'success' ? '#34C759' : type === 'error' ? '#FF3B30' : '#007AFF';
+            results.innerHTML += `<div style="color: ${color}; margin-bottom: 5px;">[${time}] ${message}</div>`;
+            console.log(message);
+        }
+
+        function testSettings() {
+            log('开始测试设置面板功能...', 'info');
+            
+            const settingsPanel = document.getElementById('settingsPanel');
+            if (!settingsPanel) {
+                log('❌ 设置面板元素不存在', 'error');
+                return;
+            }
+            
+            // 测试打开面板
+            settingsPanel.classList.add('open');
+            log('✅ 设置面板已打开', 'success');
+            
+            // 2秒后自动关闭
+            setTimeout(() => {
+                settingsPanel.classList.remove('open');
+                log('✅ 设置面板已关闭', 'success');
+            }, 2000);
+        }
+
+        function checkElements() {
+            log('检查页面元素...', 'info');
+            
+            const elements = [
+                { id: 'settingsBtn', name: '设置按钮' },
+                { id: 'settingsPanel', name: '设置面板' },
+                { id: 'closeSettingsBtn', name: '关闭按钮' },
+                { id: 'notification', name: '通知组件' }
+            ];
+            
+            elements.forEach(({ id, name }) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    log(`✅ ${name} 存在`, 'success');
+                } else {
+                    log(`❌ ${name} 不存在`, 'error');
+                }
+            });
+            
+            // 检查DOM工具类
+            if (typeof DOM !== 'undefined') {
+                log('✅ DOM工具类可用', 'success');
+            } else {
+                log('❌ DOM工具类不可用', 'error');
+            }
+        }
+
+        // 页面加载完成后设置事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            log('页面加载完成，开始初始化...', 'info');
+            
+            // 设置按钮事件
+            const settingsBtn = document.getElementById('settingsBtn');
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', function() {
+                    log('设置按钮被点击', 'info');
+                    const panel = document.getElementById('settingsPanel');
+                    if (panel) {
+                        panel.classList.add('open');
+                        log('✅ 设置面板已打开', 'success');
+                    }
+                });
+            }
+            
+            // 关闭按钮事件
+            const closeBtn = document.getElementById('closeSettingsBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    log('关闭按钮被点击', 'info');
+                    const panel = document.getElementById('settingsPanel');
+                    if (panel) {
+                        panel.classList.remove('open');
+                        log('✅ 设置面板已关闭', 'success');
+                    }
+                });
+            }
+            
+            // 点击面板外部关闭
+            document.addEventListener('click', function(e) {
+                const panel = document.getElementById('settingsPanel');
+                const settingsBtn = document.getElementById('settingsBtn');
+                
+                if (panel && panel.classList.contains('open')) {
+                    if (!panel.contains(e.target) && !settingsBtn.contains(e.target)) {
+                        panel.classList.remove('open');
+                        log('✅ 点击外部，设置面板已关闭', 'success');
+                    }
+                }
+            });
+            
+            // ESC键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const panel = document.getElementById('settingsPanel');
+                    if (panel && panel.classList.contains('open')) {
+                        panel.classList.remove('open');
+                        log('✅ 按ESC键，设置面板已关闭', 'success');
+                    }
+                }
+            });
+            
+            log('✅ 事件监听器设置完成', 'success');
+            
+            // 自动检查元素
+            setTimeout(checkElements, 500);
+        });
+    </script>
+</body>
+</html>

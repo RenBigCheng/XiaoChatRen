@@ -1,0 +1,786 @@
+/* ==========================================
+   3D全息投影机器人样式
+   3D Hologram Robot Styles
+   ========================================== */
+
+/* 3D机器人容器 */
+.robot-3d-container {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  /* 性能优化 */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* 单个机器人时的大尺寸样式 */
+.single-robot .robot-3d-container {
+  width: 350px;
+  height: 350px;
+}
+
+/* 机器人主体 */
+.robot-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: robotFloat 6s ease-in-out infinite,
+             robotRotate 20s linear infinite;
+  /* 性能优化 */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0); /* 强制GPU加速 */
+}
+
+/* 机器人悬浮动画 */
+@keyframes robotFloat {
+  0%, 100% {
+    transform: translateY(0px) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotateY(180deg);
+  }
+}
+
+/* 机器人旋转动画 */
+@keyframes robotRotate {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* 机器人头部 */
+.robot-head {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #007AFF, #AF52DE);
+  border-radius: 20px;
+  box-shadow: 
+    0 0 30px rgba(0, 122, 255, 0.6),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+  transform-style: preserve-3d;
+  animation: robotBreathe 3s ease-in-out infinite;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 角色专属头部样式 */
+.robot-3d-container[data-role="assistant"] .robot-head {
+  background: linear-gradient(135deg, #007AFF, #5AC8FA);
+  box-shadow: 
+    0 0 30px rgba(0, 122, 255, 0.6),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.robot-3d-container[data-role="teacher"] .robot-head {
+  background: linear-gradient(135deg, #34C759, #30D158);
+  box-shadow: 
+    0 0 30px rgba(52, 199, 89, 0.6),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+  border-radius: 20px 20px 15px 15px;
+}
+
+/* 教师帽装饰 */
+.robot-3d-container[data-role="teacher"] .robot-head::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  width: 60px;
+  height: 20px;
+  background: linear-gradient(135deg, #1D4ED8, #3B82F6);
+  border-radius: 10px 10px 0 0;
+  transform: translateX(-50%);
+  box-shadow: 0 0 15px rgba(29, 78, 216, 0.4);
+  opacity: 0;
+  animation: decorationFadeIn 0.5s ease-out 0.3s forwards;
+}
+
+.robot-3d-container[data-role="teacher"] .robot-head::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 80px;
+  height: 8px;
+  background: linear-gradient(135deg, #1D4ED8, #3B82F6);
+  border-radius: 4px;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(29, 78, 216, 0.3);
+  opacity: 0;
+  animation: decorationFadeIn 0.5s ease-out 0.4s forwards;
+}
+
+.robot-3d-container[data-role="doctor"] .robot-head {
+  background: linear-gradient(135deg, #FFFFFF, #F8FAFC);
+  box-shadow: 
+    0 0 30px rgba(255, 59, 48, 0.4),
+    inset 0 0 20px rgba(255, 255, 255, 0.8);
+  border: 3px solid rgba(255, 59, 48, 0.3);
+}
+
+.robot-3d-container[data-role="leader"] .robot-head {
+  background: linear-gradient(135deg, #FF9500, #FFD60A);
+  box-shadow: 
+    0 0 30px rgba(255, 149, 0, 0.7),
+    inset 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* 领导皇冠装饰 */
+.robot-3d-container[data-role="leader"] .robot-head::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid #FFD60A;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 10px rgba(255, 214, 10, 0.5));
+  opacity: 0;
+  animation: decorationFadeIn 0.5s ease-out 0.3s forwards;
+}
+
+.robot-3d-container[data-role="leader"] .robot-head::after {
+  content: '★';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #FF9500;
+  font-size: 12px;
+  text-shadow: 0 0 8px rgba(255, 149, 0, 0.8);
+  opacity: 0;
+  animation: decorationFadeIn 0.5s ease-out 0.4s forwards;
+}
+
+/* 机器人呼吸效果 */
+@keyframes robotBreathe {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 
+      0 0 30px rgba(0, 122, 255, 0.6),
+      inset 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 
+      0 0 40px rgba(0, 122, 255, 0.8),
+      inset 0 0 25px rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* 机器人眼睛 */
+.robot-eyes {
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+}
+
+.robot-eye {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  animation: robotBlink 4s infinite;
+}
+
+/* 眼睛闪烁动画 */
+@keyframes robotBlink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  95% {
+    transform: scaleY(0.1);
+    opacity: 0.3;
+  }
+}
+
+/* 机器人嘴部 */
+.robot-mouth {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  animation: robotTalk 2s ease-in-out infinite;
+}
+
+/* 嘴部说话动画 */
+@keyframes robotTalk {
+  0%, 100% {
+    width: 30px;
+    opacity: 0.8;
+  }
+  50% {
+    width: 35px;
+    opacity: 1;
+  }
+}
+
+/* 机器人身体 */
+.robot-body {
+  position: absolute;
+  width: 120px;
+  height: 100px;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #007AFF, #5AC8FA);
+  border-radius: 15px;
+  box-shadow: 
+    0 0 25px rgba(90, 200, 250, 0.5),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+  transform-style: preserve-3d;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 角色专属身体样式 */
+.robot-3d-container[data-role="assistant"] .robot-body {
+  background: linear-gradient(135deg, #007AFF, #5AC8FA);
+  box-shadow: 
+    0 0 25px rgba(90, 200, 250, 0.5),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.robot-3d-container[data-role="teacher"] .robot-body {
+  background: linear-gradient(135deg, #34C759, #30D158);
+  box-shadow: 
+    0 0 25px rgba(52, 199, 89, 0.5),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.robot-3d-container[data-role="doctor"] .robot-body {
+  background: linear-gradient(135deg, #FFFFFF, #F8FAFC);
+  box-shadow: 
+    0 0 25px rgba(255, 59, 48, 0.3),
+    inset 0 0 15px rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(255, 59, 48, 0.2);
+}
+
+/* 医生红十字装饰 */
+.robot-3d-container[data-role="doctor"] .robot-body::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 4px;
+  background: #FF3B30;
+  transform: translate(-50%, -50%);
+  border-radius: 2px;
+  opacity: 0;
+  animation: decorationFadeIn 0.5s ease-out 0.3s forwards;
+}
+
+.robot-3d-container[data-role="doctor"] .robot-body::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 20px;
+  background: #FF3B30;
+  transform: translate(-50%, -50%);
+  border-radius: 2px;
+  opacity: 0;
+  animation: decorationFadeIn 0.5s ease-out 0.4s forwards;
+}
+
+.robot-3d-container[data-role="leader"] .robot-body {
+  background: linear-gradient(135deg, #FF9500, #FFD60A);
+  box-shadow: 
+    0 0 25px rgba(255, 149, 0, 0.6),
+    inset 0 0 15px rgba(255, 255, 255, 0.3);
+  width: 130px; /* 稍微宽一些，显示威严 */
+}
+
+/* 身体装饰线条 - 非医生角色 */
+.robot-3d-container:not([data-role="doctor"]) .robot-body::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
+  animation: bodyPulse 2s ease-in-out infinite;
+}
+
+.robot-3d-container:not([data-role="doctor"]) .robot-body::after {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  right: 30px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 1px;
+  animation: bodyPulse 2s ease-in-out infinite 0.5s;
+}
+
+/* 身体脉冲动画 */
+@keyframes bodyPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.1);
+  }
+}
+
+/* 机器人手臂 */
+.robot-arms {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.robot-arm {
+  width: 40px;
+  height: 60px;
+  background: linear-gradient(135deg, #34C759, #30D158);
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(52, 199, 89, 0.4);
+  transform-origin: top center;
+  animation: armWave 4s ease-in-out infinite;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 角色专属手臂样式 */
+.robot-3d-container[data-role="assistant"] .robot-arm {
+  background: linear-gradient(135deg, #007AFF, #5AC8FA);
+  box-shadow: 0 0 20px rgba(0, 122, 255, 0.4);
+}
+
+.robot-3d-container[data-role="teacher"] .robot-arm {
+  background: linear-gradient(135deg, #34C759, #30D158);
+  box-shadow: 0 0 20px rgba(52, 199, 89, 0.4);
+}
+
+.robot-3d-container[data-role="doctor"] .robot-arm {
+  background: linear-gradient(135deg, #FFFFFF, #F8FAFC);
+  box-shadow: 0 0 20px rgba(255, 59, 48, 0.3);
+  border: 2px solid rgba(255, 59, 48, 0.2);
+}
+
+.robot-3d-container[data-role="leader"] .robot-arm {
+  background: linear-gradient(135deg, #FF9500, #FFD60A);
+  box-shadow: 0 0 20px rgba(255, 149, 0, 0.5);
+  width: 45px; /* 稍微粗壮一些 */
+}
+
+.robot-arm.left {
+  animation-delay: 0s;
+}
+
+.robot-arm.right {
+  animation-delay: 2s;
+}
+
+/* 手臂挥动动画 */
+@keyframes armWave {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  75% {
+    transform: rotate(15deg);
+  }
+}
+
+/* 全息投影光环 */
+.hologram-rings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  pointer-events: none;
+}
+
+.hologram-ring {
+  position: absolute;
+  border: 2px solid rgba(0, 122, 255, 0.3);
+  border-radius: 50%;
+  animation: ringRotate 10s linear infinite;
+  transition: border-color 0.6s ease;
+}
+
+/* 角色专属光环颜色 */
+.robot-3d-container[data-role="assistant"] .hologram-ring {
+  border-color: rgba(0, 122, 255, 0.3);
+}
+
+.robot-3d-container[data-role="teacher"] .hologram-ring {
+  border-color: rgba(52, 199, 89, 0.3);
+}
+
+.robot-3d-container[data-role="doctor"] .hologram-ring {
+  border-color: rgba(255, 59, 48, 0.3);
+}
+
+.robot-3d-container[data-role="leader"] .hologram-ring {
+  border-color: rgba(255, 149, 0, 0.4);
+}
+
+.hologram-ring:nth-child(1) {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  animation-duration: 8s;
+}
+
+.hologram-ring:nth-child(2) {
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  animation-duration: 12s;
+  animation-direction: reverse;
+}
+
+.hologram-ring:nth-child(3) {
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+  animation-duration: 15s;
+}
+
+/* 光环旋转动画 */
+@keyframes ringRotate {
+  0% {
+    transform: rotate(0deg);
+    border-color: rgba(0, 122, 255, 0.3);
+  }
+  33% {
+    border-color: rgba(175, 82, 222, 0.3);
+  }
+  66% {
+    border-color: rgba(52, 199, 89, 0.3);
+  }
+  100% {
+    transform: rotate(360deg);
+    border-color: rgba(0, 122, 255, 0.3);
+  }
+}
+
+/* 粒子效果容器 */
+.hologram-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #007AFF;
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 6s linear infinite;
+  transition: background-color 0.6s ease;
+}
+
+/* 角色专属粒子颜色 */
+.robot-3d-container[data-role="assistant"] .particle {
+  background: #007AFF;
+}
+
+.robot-3d-container[data-role="teacher"] .particle {
+  background: #34C759;
+}
+
+.robot-3d-container[data-role="doctor"] .particle {
+  background: #FF3B30;
+}
+
+.robot-3d-container[data-role="leader"] .particle {
+  background: #FF9500;
+}
+
+/* 粒子浮动动画 */
+@keyframes particleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(80px) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(-80px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(0);
+  }
+}
+
+/* 交互效果 */
+.robot-3d-container:hover .robot-3d {
+  animation-duration: 3s, 10s;
+}
+
+.robot-3d-container:hover .hologram-rings {
+  transform: translate(-50%, -50%) scale(1.2);
+  transition: transform 0.5s ease-out;
+}
+
+.robot-3d-container:hover .robot-head {
+  box-shadow: 
+    0 0 50px rgba(0, 122, 255, 1),
+    inset 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+/* 能量波纹效果 */
+.energy-ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border: 2px solid rgba(0, 122, 255, 0.8);
+  border-radius: 50%;
+  opacity: 0;
+  animation: rippleExpand 1s ease-out;
+}
+
+@keyframes rippleExpand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+/* 装饰淡入动画 */
+@keyframes decorationFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* 变身动画系统 */
+.robot-3d-container.transforming {
+  pointer-events: none;
+}
+
+.robot-3d-container.transforming .robot-3d {
+  animation: robotTransform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes robotTransform {
+  0% {
+    transform: translateZ(0) scale(1);
+    opacity: 1;
+  }
+  25% {
+    transform: translateZ(0) scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateZ(0) scale(0.6) rotateY(180deg);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateZ(0) scale(0.8) rotateY(360deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateZ(0) scale(1) rotateY(360deg);
+    opacity: 1;
+  }
+}
+
+/* 变身粒子爆发动画 */
+.robot-3d-container.transforming .hologram-particles::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: transformBurst 1.2s ease-out;
+}
+
+@keyframes transformBurst {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* 点击反馈动画 */
+.robot-3d-container.clicked .robot-3d {
+  animation: robotClick 0.3s ease-out;
+}
+
+@keyframes robotClick {
+  0% {
+    transform: translateZ(0) scale(1);
+  }
+  50% {
+    transform: translateZ(0) scale(1.1);
+  }
+  100% {
+    transform: translateZ(0) scale(1);
+  }
+}
+
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .robot-3d-container {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .robot-head {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .robot-body {
+    width: 100px;
+    height: 80px;
+    top: 90px;
+  }
+  
+  .robot-arms {
+    top: 100px;
+    width: 160px;
+  }
+  
+  .robot-arm {
+    width: 30px;
+    height: 50px;
+  }
+  
+  .hologram-rings {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .robot-3d-container {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+/* 深色主题适配 */
+[data-theme="dark"] .robot-head {
+  background: linear-gradient(135deg, #0A84FF, #BF5AF2);
+}
+
+[data-theme="dark"] .robot-body {
+  background: linear-gradient(135deg, #0A84FF, #64D2FF);
+}
+
+[data-theme="dark"] .robot-arm {
+  background: linear-gradient(135deg, #32D74B, #32D74B);
+}
+
+[data-theme="dark"] .hologram-ring {
+  border-color: rgba(10, 132, 255, 0.4);
+}
+
+[data-theme="dark"] .particle {
+  background: #0A84FF;
+}
+
+
+/* 减少动画偏好设置 */
+@media (prefers-reduced-motion: reduce) {
+  .robot-3d {
+    animation: none;
+    transform: translateZ(0);
+  }
+  
+  .robot-head,
+  .robot-body,
+  .robot-arm,
+  .robot-eye,
+  .robot-mouth {
+    animation: none;
+  }
+  
+  .hologram-ring {
+    animation: none;
+    opacity: 0.3;
+  }
+  
+  .particle {
+    animation: none;
+    opacity: 0;
+  }
+  
+  .robot-3d-container:hover .robot-3d {
+    animation: none;
+  }
+}

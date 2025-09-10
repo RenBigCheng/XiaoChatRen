@@ -1,0 +1,342 @@
+/* ==========================================
+   AI智能助手 - 主样式文件
+   采用苹果风格设计理念，融合现代艺术感
+   ========================================== */
+
+/* CSS变量定义 - 设计系统核心 */
+:root {
+  /* 颜色系统 - 苹果风格配色 */
+  --primary-blue: #007AFF;
+  --primary-blue-hover: #0056CC;
+  --primary-blue-light: rgba(0, 122, 255, 0.1);
+  
+  --secondary-purple: #AF52DE;
+  --secondary-green: #34C759;
+  --secondary-orange: #FF9500;
+  --secondary-red: #FF3B30;
+  
+  /* 中性色系 */
+  --gray-50: #FAFAFA;
+  --gray-100: #F5F5F7;
+  --gray-200: #E5E5EA;
+  --gray-300: #D1D1D6;
+  --gray-400: #8E8E93;
+  --gray-500: #636366;
+  --gray-600: #48484A;
+  --gray-700: #3A3A3C;
+  --gray-800: #2C2C2E;
+  --gray-900: #1C1C1E;
+  
+  /* 语义化颜色 */
+  --text-primary: #1C1C1E;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #C7C7CC;
+  --text-inverse: #FFFFFF;
+  
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F7;
+  --bg-tertiary: #FAFAFA;
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+  
+  --border-light: #E5E5EA;
+  --border-medium: #D1D1D6;
+  --border-strong: #8E8E93;
+  
+  /* 阴影系统 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.2);
+  
+  /* 圆角系统 */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  
+  /* 间距系统 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  
+  /* 字体系统 */
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
+  
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* 动画系统 */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.25s;
+  --duration-slow: 0.35s;
+  
+  --easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --easing-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --easing-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+  
+  /* 布局变量 */
+  --header-height: 72px;
+  --sidebar-width: 280px;
+  --input-area-height: 120px;
+  
+  /* Z-index层级 */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal: 1040;
+  --z-popover: 1050;
+  --z-tooltip: 1060;
+}
+
+/* 深色主题变量 - 自动模式 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #FFFFFF;
+    --text-secondary: #8E8E93;
+    --text-tertiary: #636366;
+    --text-inverse: #1C1C1E;
+    
+    --bg-primary: #000000;
+    --bg-secondary: #1C1C1E;
+    --bg-tertiary: #2C2C2E;
+    --bg-overlay: rgba(255, 255, 255, 0.1);
+    
+    --border-light: #38383A;
+    --border-medium: #48484A;
+    --border-strong: #636366;
+  }
+}
+
+/* 强制深色主题 - 手动切换 */
+[data-theme="dark"] {
+  --text-primary: #FFFFFF;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #636366;
+  --text-inverse: #1C1C1E;
+  
+  --bg-primary: #000000;
+  --bg-secondary: #1C1C1E;
+  --bg-tertiary: #2C2C2E;
+  --bg-overlay: rgba(255, 255, 255, 0.1);
+  
+  --border-light: #38383A;
+  --border-medium: #48484A;
+  --border-strong: #636366;
+  
+  /* 深色主题下的阴影调整 */
+  --shadow-sm: 0 1px 3px rgba(255, 255, 255, 0.1);
+  --shadow-md: 0 4px 12px rgba(255, 255, 255, 0.1);
+  --shadow-lg: 0 8px 25px rgba(255, 255, 255, 0.15);
+  --shadow-xl: 0 16px 40px rgba(255, 255, 255, 0.2);
+}
+
+/* 强制浅色主题 - 手动切换 */
+[data-theme="light"] {
+  --text-primary: #1C1C1E;
+  --text-secondary: #8E8E93;
+  --text-tertiary: #C7C7CC;
+  --text-inverse: #FFFFFF;
+  
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F7;
+  --bg-tertiary: #FAFAFA;
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+  
+  --border-light: #E5E5EA;
+  --border-medium: #D1D1D6;
+  --border-strong: #8E8E93;
+  
+  /* 浅色主题下的阴影保持原样 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* 基础重置和标准化 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: var(--radius-full);
+  transition: background-color var(--duration-normal) var(--easing-standard);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+/* 选择文本样式 */
+::selection {
+  background-color: var(--primary-blue-light);
+  color: var(--primary-blue);
+}
+
+/* 焦点样式 */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* 主应用容器 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, 
+    var(--bg-primary) 0%, 
+    var(--bg-secondary) 100%);
+}
+
+/* 响应式设计断点 */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 100vw;
+    --header-height: 60px;
+  }
+  
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --space-4: 12px;
+    --space-6: 20px;
+    --space-8: 28px;
+  }
+}
+
+/* 辅助类 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* 打印样式 */
+@media print {
+  .app-header,
+  .sidebar,
+  .chat-input-area,
+  .settings-panel {
+    display: none !important;
+  }
+  
+  .chat-section {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .chat-messages {
+    box-shadow: none !important;
+    border: none !important;
+  }
+}

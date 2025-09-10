@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色同步测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 40px;
+            background: #f5f5f7;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+        }
+        .test-title {
+            color: #1d1d1f;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056CC;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔄 角色同步功能测试</h1>
+        
+        <div class="test-section">
+            <div class="test-title">1. 脚本加载状态</div>
+            <div id="scriptStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">2. 组件初始化状态</div>
+            <div id="componentStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">3. 角色同步测试</div>
+            <div id="syncStatus"></div>
+            <button onclick="testRoleSync()">测试角色同步</button>
+            <button onclick="testRobotClick()">模拟机器人点击</button>
+            <button onclick="testDropdownClick()">模拟下拉菜单点击</button>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">4. 当前状态</div>
+            <div id="currentStatus"></div>
+            <button onclick="refreshStatus()">刷新状态</button>
+        </div>
+    </div>
+
+    <script>
+        // 检查脚本加载状态
+        function checkScriptStatus() {
+            const scriptStatus = document.getElementById('scriptStatus');
+            let html = '';
+            
+            // 检查各个脚本是否加载
+            const checks = [
+                { name: 'HologramRobot', exists: typeof window.HologramRobot !== 'undefined' },
+                { name: 'createHologramRobot', exists: typeof window.createHologramRobot !== 'undefined' },
+                { name: 'RoleSyncManager', exists: typeof window.RoleSyncManager !== 'undefined' },
+                { name: 'roleSyncManager实例', exists: typeof window.roleSyncManager !== 'undefined' },
+                { name: 'chatManager实例', exists: typeof window.chatManager !== 'undefined' },
+                { name: 'app实例', exists: typeof window.app !== 'undefined' }
+            ];
+            
+            checks.forEach(check => {
+                const statusClass = check.exists ? 'success' : 'error';
+                const statusText = check.exists ? '✅ 已加载' : '❌ 未加载';
+                html += `<div class="status ${statusClass}">${check.name}: ${statusText}</div>`;
+            });
+            
+            scriptStatus.innerHTML = html;
+        }
+        
+        // 检查组件初始化状态
+        function checkComponentStatus() {
+            const componentStatus = document.getElementById('componentStatus');
+            let html = '';
+            
+            // 检查DOM元素
+            const elements = [
+                { name: '机器人容器', id: 'mainRobot' },
+                { name: '角色下拉触发器', id: 'roleDropdownTrigger' },
+                { name: '角色下拉菜单', id: 'roleDropdownMenu' },
+                { name: '角色选项', class: 'role-option' }
+            ];
+            
+            elements.forEach(element => {
+                let exists = false;
+                if (element.id) {
+                    exists = document.getElementById(element.id) !== null;
+                } else if (element.class) {
+                    exists = document.querySelector(`.${element.class}`) !== null;
+                }
+                
+                const statusClass = exists ? 'success' : 'error';
+                const statusText = exists ? '✅ 存在' : '❌ 不存在';
+                html += `<div class="status ${statusClass}">${element.name}: ${statusText}</div>`;
+            });
+            
+            componentStatus.innerHTML = html;
+        }
+        
+        // 测试角色同步
+        function testRoleSync() {
+            const syncStatus = document.getElementById('syncStatus');
+            
+            if (!window.roleSyncManager) {
+                syncStatus.innerHTML = '<div class="status error">❌ 角色同步管理器未初始化</div>';
+                return;
+            }
+            
+            try {
+                // 测试切换到不同角色
+                const roles = ['assistant', 'teacher', 'doctor', 'leader'];
+                let currentIndex = 0;
+                
+                const testNext = () => {
+                    if (currentIndex < roles.length) {
+                        const role = roles[currentIndex];
+                        console.log(`测试切换到角色: ${role}`);
+                        window.roleSyncManager.setRole(role);
+                        
+                        setTimeout(() => {
+                            const currentRole = window.roleSyncManager.getCurrentRole();
+                            const success = currentRole === role;
+                            const statusClass = success ? 'success' : 'error';
+                            const statusText = success ? '✅ 成功' : '❌ 失败';
+                            
+                            syncStatus.innerHTML += `<div class="status ${statusClass}">切换到 ${role}: ${statusText} (当前: ${currentRole})</div>`;
+                            
+                            currentIndex++;
+                            if (currentIndex < roles.length) {
+                                setTimeout(testNext, 1000);
+                            }
+                        }, 500);
+                    }
+                };
+                
+                syncStatus.innerHTML = '<div class="status info">🔄 开始角色同步测试...</div>';
+                testNext();
+                
+            } catch (error) {
+                syncStatus.innerHTML = `<div class="status error">❌ 测试失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 模拟机器人点击
+        function testRobotClick() {
+            const syncStatus = document.getElementById('syncStatus');
+            
+            try {
+                const robotContainer = document.querySelector('#mainRobot .robot-3d-container');
+                if (robotContainer) {
+                    robotContainer.click();
+                    syncStatus.innerHTML = '<div class="status info">🤖 模拟机器人点击完成</div>';
+                } else {
+                    syncStatus.innerHTML = '<div class="status error">❌ 机器人容器未找到</div>';
+                }
+            } catch (error) {
+                syncStatus.innerHTML = `<div class="status error">❌ 模拟点击失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 模拟下拉菜单点击
+        function testDropdownClick() {
+            const syncStatus = document.getElementById('syncStatus');
+            
+            try {
+                const trigger = document.getElementById('roleDropdownTrigger');
+                if (trigger) {
+                    trigger.click();
+                    syncStatus.innerHTML = '<div class="status info">📋 模拟下拉菜单点击完成</div>';
+                } else {
+                    syncStatus.innerHTML = '<div class="status error">❌ 下拉菜单触发器未找到</div>';
+                }
+            } catch (error) {
+                syncStatus.innerHTML = `<div class="status error">❌ 模拟点击失败: ${error.message}</div>`;
+            }
+        }
+        
+        // 刷新当前状态
+        function refreshStatus() {
+            const currentStatus = document.getElementById('currentStatus');
+            let html = '';
+            
+            if (window.roleSyncManager) {
+                const currentRole = window.roleSyncManager.getCurrentRole();
+                html += `<div class="status info">当前角色: ${currentRole}</div>`;
+                
+                const robotInstance = window.roleSyncManager.getRobotInstance();
+                if (robotInstance) {
+                    const robotRole = robotInstance.getCurrentRole();
+                    html += `<div class="status info">机器人角色: ${robotRole}</div>`;
+                }
+                
+                if (window.chatManager) {
+                    const chatRole = window.chatManager.currentRole;
+                    html += `<div class="status info">聊天管理器角色: ${chatRole}</div>`;
+                }
+            } else {
+                html = '<div class="status error">❌ 角色同步管理器未初始化</div>';
+            }
+            
+            currentStatus.innerHTML = html;
+        }
+        
+        // 页面加载完成后执行检查
+        document.addEventListener('DOMContentLoaded', () => {
+            // 等待一段时间确保所有脚本都加载完成
+            setTimeout(() => {
+                checkScriptStatus();
+                checkComponentStatus();
+                refreshStatus();
+            }, 2000);
+        });
+        
+        // 监听全局角色变化事件
+        document.addEventListener('globalRoleChange', (event) => {
+            console.log('🔄 全局角色变化事件:', event.detail);
+            const syncStatus = document.getElementById('syncStatus');
+            if (syncStatus) {
+                syncStatus.innerHTML += `<div class="status success">🔄 角色变化: ${event.detail.oldRole} → ${event.detail.newRole}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
